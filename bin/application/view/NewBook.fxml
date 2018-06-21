@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="358.0" prefWidth="428.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.controller.NewBookController">
+   <children>
+      <Label layoutX="43.0" layoutY="39.0" text="图书名称：">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="81.0" text="图书作者：">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="118.0" text="图书价格：">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="200.0" text="图书描述：">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="160.0" text="图书类型：">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_name" layoutX="144.0" layoutY="33.0" promptText="请输入图书名称">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tf_auther" layoutX="144.0" layoutY="76.0" promptText="请输入图书作者">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tf_price" layoutX="144.0" layoutY="113.0" promptText="请输入图书价格">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tf_type" layoutX="144.0" layoutY="154.0" promptText="请输入图书类型">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tf_des" layoutX="144.0" layoutY="195.0" promptText="试着描述这本图书">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Button layoutX="109.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#addBook" text="入库" textFill="#207cb5">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="264.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#quit" text="取消" textFill="#e42121">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

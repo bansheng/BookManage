@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="327.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RegisterController">
+   <children>
+      <Button fx:id="btn_Reg" layoutX="54.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#tryRegister" text="注册" textFill="#449747">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <TextField fx:id="tf_name" layoutX="86.0" layoutY="54.0" promptText="请输入您的姓名">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+      <PasswordField fx:id="tf_password" layoutX="86.0" layoutY="106.0" promptText="请输入8位密码">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </PasswordField>
+      <TextField fx:id="tf_phone" layoutX="86.0" layoutY="158.0" promptText="请输入11位手机号">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+      <Label layoutX="24.0" layoutY="59.0" text="姓名：">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label layoutX="24.0" layoutY="112.0" text="密码：">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label layoutX="24.0" layoutY="163.0" text="手机号：">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <CheckBox fx:id="cb_accept" layoutX="54.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#accept" text="是否接受条约">
+         <font>
+            <Font size="16.0" />
+         </font></CheckBox>
+      <Button fx:id="btn_quit" layoutX="207.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#quit" text="取消" textFill="#c32f2f">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <TextArea editable="false" layoutX="308.0" layoutY="14.0" prefHeight="274.0" prefWidth="274.0" text="以下是管理系统注册须知，请务必仔细&#10;阅读，&#10;---------------------------------------&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;---------------------------------------&#10;以上为条约内容。" />
+     
+      
+   </children>
+</AnchorPane>

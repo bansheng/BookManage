@@ -1,0 +1,444 @@
+package application.controller;
+
+import javafx.fxml.FXML;
+
+import javafx.scene.control.Button;
+
+import javafx.scene.control.TextField;
+
+import javafx.scene.control.TextArea;
+
+import javafx.scene.control.Tab;
+
+import javafx.scene.input.MouseEvent;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import application.Main;
+import application.model.Book;
+import application.model.Borrow;
+import application.model.AutoCompleteTextFieldBuilder;
+import application.model.AutoCompleteTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+
+import javafx.scene.control.TableView;
+
+import javafx.scene.control.TableColumn;
+
+public class ReaderViewController {
+	@FXML
+	private Tab tab_book;
+	@FXML
+	private TableView<Book> table_Book;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_code;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_name;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_auther;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_type;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_des;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_state;
+	@FXML
+	private TableColumn<Book, String> Bcolumn_price;
+	@FXML
+	private TextField tf_book_num;
+	@FXML
+	private TextField tf_book_name;
+	@FXML
+	private Tab tab_reader;
+	@FXML
+	private TextField tf_code;
+	@FXML
+	private TextField tf_name;
+	@FXML
+	private TextField tf_age;
+	@FXML
+	private TextField tf_sex;
+	@FXML
+	private TextField tf_cost;
+	@FXML
+	private TextArea tf_limit;
+	@FXML
+	private TableView<Borrow> table_borrow;
+	@FXML
+	private TableColumn<Borrow, String> Bocolumn_Bono;
+	@FXML
+	private TableColumn<Borrow, String> Bocolumn_Bno;
+	@FXML
+	private TableColumn<Borrow, String> Bocolumn_Bname;
+	@FXML
+	private TableColumn<Borrow, String> Bocolumn_Bprice;
+	@FXML
+	private TableColumn<Borrow, String> Bocolumn_date;
+	@FXML
+	private TableColumn<Borrow, String> Bocolumn_date2;
+	@FXML
+	private TextField tf_phone;
+	@FXML
+	private Tab tab_reborrow;
+	@FXML
+	private TextField tf_Continue_Bookno;
+	@FXML
+	private TextField tf_Continue_Bno;
+	@FXML
+	private TextField tf_Continue_Bookname;
+	@FXML
+	private TextField tf_Continue_price;
+	@FXML
+	private TextField tf_Continue_Date;
+	@FXML
+	private TextField tf_Continue_IsOutofdate;
+	@FXML
+	private Button btn_continue;
+
+	private int Rno; // 登录的读者编号
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 可以方便地修改日期格式
+	private ObservableList<Book> BookData = FXCollections.observableArrayList();
+	private ObservableList<Borrow> BorrowData = FXCollections.observableArrayList();
+	
+	// 用于续借的补全
+	private List<String> Booksno = new ArrayList<String>();
+	private AutoCompleteTextField autoBookno;
+
+	@FXML
+	private void initialize() {
+		Bcolumn_code.setCellValueFactory(cellData -> cellData.getValue().getCode());
+		Bcolumn_code.setStyle("-fx-alignment: CENTER;");
+		Bcolumn_name.setCellValueFactory(cellData -> cellData.getValue().getName());
+		Bcolumn_name.setStyle("-fx-alignment: CENTER;");
+		Bcolumn_auther.setCellValueFactory(cellData -> cellData.getValue().getAuther());
+		Bcolumn_auther.setStyle("-fx-alignment: CENTER;");
+		Bcolumn_type.setCellValueFactory(cellData -> cellData.getValue().getType());
+		Bcolumn_type.setStyle("-fx-alignment: CENTER;");
+		Bcolumn_des.setCellValueFactory(cellData -> cellData.getValue().getDes());
+		Bcolumn_des.setStyle("-fx-alignment: CENTER;");
+		Bcolumn_state.setCellValueFactory(cellData -> cellData.getValue().getIsIn());
+		Bcolumn_state.setStyle("-fx-alignment: CENTER;");
+		Bcolumn_price.setCellValueFactory(cellData -> cellData.getValue().getPrice());
+		Bcolumn_price.setStyle("-fx-alignment: CENTER;");
+
+		Bocolumn_Bono.setCellValueFactory(cellData -> cellData.getValue().getBorrowno());
+		Bocolumn_Bono.setStyle("-fx-alignment: CENTER;");
+		Bocolumn_Bno.setCellValueFactory(cellData -> cellData.getValue().getBookno());
+		Bocolumn_Bno.setStyle("-fx-alignment: CENTER;");
+		Bocolumn_Bname.setCellValueFactory(cellData -> cellData.getValue().getBookname());
+		Bocolumn_Bname.setStyle("-fx-alignment: CENTER;");
+		Bocolumn_Bprice.setCellValueFactory(cellData -> cellData.getValue().getPrice());
+		Bocolumn_Bprice.setStyle("-fx-alignment: CENTER;");
+		Bocolumn_date.setCellValueFactory(cellData -> cellData.getValue().getDate());
+		Bocolumn_date.setStyle("-fx-alignment: CENTER;");
+		Bocolumn_date2.setCellValueFactory(cellData -> cellData.getValue().getDate2());
+		Bocolumn_date2.setStyle("-fx-alignment: CENTER;");
+
+		autoBookno = AutoCompleteTextFieldBuilder.build(tf_Continue_Bookno);
+	}
+
+	public void setRno(int s) {
+		Rno = s;
+	}
+
+	// Event Listener on Tab[#tab_book].onSelectionChanged
+	@FXML
+	public void tabBookSelect(Event event) {
+		// TODO Autogenerated
+		if (tab_book.isSelected()) {
+			book_Load();
+		}
+	}
+
+	// Event Listener on Tab[#tab_reader].onSelectionChanged
+	@FXML
+	public void tabReaderSelect(Event event) {
+		// TODO Autogenerated
+		if (tab_reader.isSelected()) {
+			reader_load();
+			boorow_load();
+		}
+	}
+
+	// Event Listener on Tab[#tab_reborrow].onSelectionChanged
+	@FXML
+	public void tabReborrowSelect(Event event) {
+		// TODO Autogenerated
+		if (tab_reborrow.isSelected()) {
+			clearReborrow();
+			btn_continue.setDisable(false);
+			boorow_load();
+			Booksno.clear();
+			// 把有效的租借信息放入
+			for (Borrow b : BorrowData) {
+				if (b.getValid().get()) {
+					// 有效
+					Booksno.add(b.getBookno().get());
+				}
+			}
+			autoBookno.setCacheDataList(Booksno);
+		}
+	}
+
+	public void clearReborrow() {
+		tf_Continue_Bookno.clear();
+		tf_Continue_Bno.clear();
+		tf_Continue_Bookname.clear();
+		tf_Continue_Date.clear();
+		tf_Continue_price.clear();
+		tf_Continue_IsOutofdate.clear();
+	}
+	
+	// Event Listener on Button.onMouseClicked
+	@FXML
+	public void reborrowSearch(MouseEvent event) {
+		// TODO Autogenerated
+		if (tf_Continue_Bookno.getText() == null || tf_Continue_Bookno.getText().trim().equals("")) {
+			System.out.println("空");
+			return; // 不能为空
+		}
+		int index = Booksno.indexOf(Main.addzero(Integer.parseInt(tf_Continue_Bookno.getText())));
+		if (index == -1) {
+			// 不存在这样的书籍
+			JOptionPane.showMessageDialog(null, "您并没有借这本书哦", "消息提示", 0);
+			return;
+		}
+		System.out.println("查询");
+		int Bookno = Integer.parseInt(tf_Continue_Bookno.getText());
+		for (Borrow b : BorrowData) {
+			if (Integer.parseInt(b.getBookno().get()) == Bookno && b.getValid().get()) {
+				tf_Continue_Bno.setText(b.getBorrowno().get());
+				tf_Continue_Bookno.setText(b.getBookno().get());
+				tf_Continue_Bookname.setText(b.getBookname().get());
+				tf_Continue_price.setText(b.getPrice().get());
+				tf_Continue_Date.setText(b.getDate().get());
+				Date now = new Date();
+				Date before;
+				long gap = 0;
+				try {
+					before = dateFormat.parse(b.getDate().get());
+					gap = (long) ((now.getTime() - before.getTime())) / (24 * 3600 * 1000);
+					
+					System.out.println("GAP:" + gap + " now:" + now.getTime() + " before:" + before.getTime());
+					
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (gap > 30) {
+					// 过期
+					tf_Continue_IsOutofdate.setText("过期");
+					JOptionPane.showMessageDialog(null, "这本书已经过期了！不能续借", "消息提示", 0);
+					btn_continue.setDisable(true);
+					
+				}
+				else {
+					tf_Continue_IsOutofdate.setText("未过期");
+				}
+				break;
+			}
+		}
+
+	}
+
+	// Event Listener on Button[#btn_continue].onMouseClicked
+	@FXML
+	public void reborrow(MouseEvent event) {
+		// TODO Autogenerated
+		if(tf_Continue_IsOutofdate.getText() == null || tf_Continue_IsOutofdate.getText().trim().equals("")) {
+			return;
+		}
+		// 续借
+		// 修改借书表
+		try {
+			String sql = "update dbo.borrow set Bvalid = ?, date2 = ? where Bno = ?";
+			PreparedStatement psmt;
+			psmt = Main.con.prepareStatement(sql);
+			psmt.setBoolean(1, false);
+			psmt.setString(2, dateFormat.format(new Date()));
+			psmt.setInt(3, Integer.parseInt(tf_Continue_Bno.getText()));
+			psmt.execute();
+
+			int count = 0;
+			// 找到租借表编号
+			sql = "select count(*) I from dbo.borrow";
+			psmt = Main.con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = psmt.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt("I"); // 找到最大的编号
+			}
+
+			// 再建立租借表
+			sql = "insert into dbo.borrow values(?, ?, ?, ?, ?, ?, ?)";
+			psmt = Main.con.prepareStatement(sql);
+			psmt.setInt(1, count + 1);
+			psmt.setInt(2, Rno);
+			psmt.setInt(3, Integer.parseInt(tf_Continue_Bookno.getText()));
+			psmt.setInt(4, Integer.parseInt(tf_Continue_price.getText()));
+			psmt.setString(5, dateFormat.format(new Date()));
+			psmt.setString(6, dateFormat.format(new Date()));
+			psmt.setBoolean(7, true);
+			psmt.execute();
+			JOptionPane.showMessageDialog(null, "续借《" + tf_Continue_Bookname.getText() + "》成功!", "消息提示", 1);
+			clearReborrow();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "续借《" + tf_Continue_Bookname.getText() + "》失败!", "消息提示", 0);
+			clearReborrow();
+		}
+	}
+
+	// Event Listener on Button.onMouseClicked
+	@FXML
+	public void bookSearch(MouseEvent event) {
+		// TODO Autogenerated
+		if (tf_book_num.getText() != null && !tf_book_num.getText().trim().equals("")) // 编号有内容
+		{
+			// 由书籍编号寻找
+			int Bookno = 0;
+			try {
+				Bookno = Integer.parseInt(tf_book_num.getText());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "书籍编号不合理", "消息提示", 0);
+			}
+			ObservableList<Book> searchBookData = FXCollections.observableArrayList();
+			for (Book b : BookData) {
+				if (Integer.parseInt(b.getCode().get()) == Bookno) {
+					searchBookData.add(b);
+				}
+			}
+			table_Book.setItems(searchBookData);
+		} else if (tf_book_name.getText() != null && !tf_book_name.getText().trim().equals("")) // 名称有内容
+		{
+			String name = tf_book_name.getText();
+			ObservableList<Book> searchBookData = FXCollections.observableArrayList();
+			for (Book b : BookData) {
+				if (b.getName().get().contains(name)) {
+					searchBookData.add(b);
+				}
+			}
+			table_Book.setItems(searchBookData);
+		}
+	}
+
+	public void book_Load() {
+		tf_book_name.clear();
+		tf_book_num.clear();
+		BookData.clear();
+		try {
+			int Bno, price;
+			String Bname, auther, type, des;
+			boolean isIn;
+			String sql = "select * from dbo.Book where valid = ?";
+			PreparedStatement stmt = Main.con.prepareStatement(sql);
+			stmt.setBoolean(1, true);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Bno = rs.getInt("Bookno");
+				Bname = rs.getString("Bname");
+				price = rs.getInt("Bcost");
+				auther = rs.getString("Bauther");
+				type = rs.getString("Btype");
+				des = rs.getString("Bdesc");
+				isIn = rs.getBoolean("IsIn");
+				Book b = new Book(Main.addzero(Bno), Bname.trim(), auther.trim(), type.trim(), des.trim(), isIn, price);
+				BookData.add(b);
+			}
+
+			table_Book.setItems(BookData);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "书籍信息加载失败", "消息提示", 0);
+		}
+	}
+
+	@SuppressWarnings("resource")
+	private void reader_load() {
+		// TODO Auto-generated method stub
+		try {
+			String sql = "select * from dbo.reader where Rno = ?";
+			PreparedStatement psmt;
+			psmt = Main.con.prepareStatement(sql);
+			psmt.setInt(1, Rno);
+
+			ResultSet rs = psmt.executeQuery();
+			int limit = 0;
+			while (rs.next()) {
+				tf_code.setText(Main.addzero(Rno));
+				tf_name.setText(rs.getString("Rname"));
+				tf_phone.setText(rs.getString("Rphone"));
+				tf_age.setText(rs.getString("Rage"));
+				tf_sex.setText(rs.getString("Rsex"));
+				tf_cost.setText(rs.getString("Rcost"));
+				limit = rs.getInt("Rlimit");
+
+				String limits = (limit == 0) ? "无" : "";
+				if (limit != 0) {
+					sql = "select Preason from dbo.pulishment where Rno = ? and Pvalid = ?";
+					psmt = Main.con.prepareStatement(sql);
+					psmt.setInt(1, Rno);
+					psmt.setBoolean(2, true);
+					rs = psmt.executeQuery();
+					while (rs.next()) {
+						limits += rs.getString("Preason") + "\n";
+					}
+				}
+				tf_limit.setText(limits);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "读者信息加载失败", "消息提示", 0);
+		}
+	}
+
+	private void boorow_load() {
+		// TODO Auto-generated method stub
+		BorrowData.clear();
+		try {
+			String Borrowno, Bookno, Bookname, date, date2;
+			int price;
+			boolean isvalid;
+			String sql = "select Bno, dbo.Borrow.Bookno Bookno, Bname, dbo.Borrow.Bcost Bcost, date, date2, Bvalid"
+					+ " from dbo.Borrow, dbo.book where Rno = ?" + " and dbo.Borrow.Bookno = dbo.Book.Bookno";
+			PreparedStatement psmt = Main.con.prepareStatement(sql);
+			psmt.setInt(1, Rno);
+			ResultSet rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				Borrowno = Main.addzero(rs.getInt("Bno"));
+				Bookno = Main.addzero(rs.getInt("Bookno"));
+				Bookname = rs.getString("Bname").trim();
+				price = rs.getInt("Bcost");
+				date = rs.getString("date").substring(0, 19);
+				date2 = rs.getString("date2").substring(0, 19);
+				isvalid = rs.getBoolean("Bvalid");
+				if (isvalid)
+					date2 = "暂未归还";
+				Borrow b = new Borrow(Borrowno, Bookno, Bookname, date, date2, price, isvalid);
+				BorrowData.add(b);
+			}
+
+			table_borrow.setItems(BorrowData);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "租借信息加载失败", "消息提示", 0);
+		}
+	}
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="find" prefHeight="366.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.FindwordController">
+   <children>
+      <Button fx:id="btn_find" layoutX="105.0" layoutY="296.0" mnemonicParsing="false" onMouseClicked="#find_password" text="找回" textFill="#329a3c">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btn_quit" layoutX="300.0" layoutY="296.0" mnemonicParsing="false" onMouseClicked="#quit" text="取消" textFill="#c36464">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="80.0" layoutY="82.0" text="账号：" textFill="#3012c9">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="80.0" layoutY="158.0" text="手机号：" textFill="#3012c9">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_code" layoutX="161.0" layoutY="77.0" promptText="请输入账号：">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tf_phone" layoutX="161.0" layoutY="153.0" promptText="请输入手机号：">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="cb_manage" layoutX="262.0" layoutY="221.0" mnemonicParsing="false" text="是否管理员">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+   </children>
+</AnchorPane>
