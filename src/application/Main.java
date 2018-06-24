@@ -186,12 +186,12 @@ public class Main extends Application {
 	/**
 	 * 初始化数据库连接，应用关闭的时候释放
 	 */
-	public void sql_initial() {
+	public void sql_initial(String name ,String password) {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			String strCon = "jdbc:sqlserver://localhost:1433;databaseName=book";
-			String strUserName = "sa"; // 数据库的用户名称
-			String strPWD = "808511"; // 数据库的密码
+			String strUserName = name; // 数据库的用户名称
+			String strPWD = password; // 数据库的密码
 			con = java.sql.DriverManager.getConnection(strCon, strUserName, strPWD);
 			if(con==null) {
 				System.out.println("数据库连接失败!");
@@ -209,9 +209,9 @@ public class Main extends Application {
 	
 	public static String addzero(int index) {
 		String s = "" + index;
-		int a = 6-s.length();
-		while((a--) != 0) {
-			s = "0"+s;
+		int a = 6 - s.length();
+		while ((a--) != 0) {
+			s = "0" + s;
 		}
 		return s;
 	}
@@ -220,7 +220,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		Main.primaryStage = primaryStage;
 		Main.primaryStage.setTitle("图书管理系统");
-		sql_initial();
+		sql_initial("sa", "808511");
 		showLoginview();
 	}
 }

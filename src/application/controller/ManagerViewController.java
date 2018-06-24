@@ -1124,12 +1124,11 @@ public class ManagerViewController {
 				}
 
 				int index = 0; // 找到插入图书的起始下标
-				String sql = "select Bookno from dbo.Book";
-				PreparedStatement psmt = Main.con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-						ResultSet.CONCUR_READ_ONLY);
+				String sql = "select count(*) I from dbo.Book";
+				PreparedStatement psmt = Main.con.prepareStatement(sql);
 				ResultSet rs = psmt.executeQuery();
-				if (rs.last()) {
-					index = rs.getInt("Bookno");
+				while (rs.next()) {
+					index = rs.getInt("I");
 				}
 
 				String Name, Auther, type, des;
@@ -1148,7 +1147,7 @@ public class ManagerViewController {
 					// }
 					// else {
 					index++;
-					sql = "insert into dbo.Book values(?,?,?,?,?,?,?,?)";
+					sql = "insert into dbo.Book values(?,?,?,?,?,?,?,?,?)";
 					psmt = Main.con.prepareStatement(sql);
 					psmt.setInt(1, index);
 					psmt.setString(2, Name);
@@ -1190,6 +1189,7 @@ public class ManagerViewController {
 			return;
 		}
 		Book b = table_Book.getItems().get(index);
+		String name =  b.getName().get();
 		String sql = "update dbo.Book set valid = ? where Bookno = ?";
 		PreparedStatement psmt;
 		try {
@@ -1198,6 +1198,8 @@ public class ManagerViewController {
 			psmt.setBoolean(1, false);
 			psmt.setInt(2, a);
 			psmt.execute();
+			
+			JOptionPane.showMessageDialog(null, "书籍《" + name + "》删除成功！", "消息提示", 1);
 			// 重新加载书籍
 			book_Load();
 		} catch (NumberFormatException e) {

@@ -60,11 +60,12 @@ public class FindwordController {
 					password = rs.getString("Rpassword");
 				}
 				if(password.equals("null")) {
+					quit(null);
 					JOptionPane.showMessageDialog(null, "编号或者手机号码错误!无法找到密码!", "消息提示", 0);
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "密码找回:" + password, "消息提示", 1);
 					quit(null);
+					JOptionPane.showMessageDialog(null, "密码找回:" + password, "消息提示", 1);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -85,11 +86,12 @@ public class FindwordController {
 					password = rs.getString("Mpassword");
 				}
 				if(password.equals("null")) {
+					quit(null);
 					JOptionPane.showMessageDialog(null, "编号或者手机号码错误!无法找到密码!", "消息提示", 0);
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "密码找回:" + password, "消息提示", 1);
 					quit(null);
+					JOptionPane.showMessageDialog(null, "密码找回:" + password, "消息提示", 1);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

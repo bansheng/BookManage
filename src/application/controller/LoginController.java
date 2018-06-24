@@ -112,6 +112,8 @@ public class LoginController {
 			
 			String sql = "select * from dbo.manager where mcode = ?";
 			try {
+//				m.sql_initial("manager", "111402");
+				
 				psmt = Main.con.prepareStatement(sql);
 				psmt.setString(1, acount);
 				// 执行SQL语句
@@ -142,7 +144,7 @@ public class LoginController {
 				JOptionPane.showMessageDialog(null, "编号或者登录口令错误!", "消息提示", 0);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "编号或者登录口令错误!", "消息提示", 0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -151,7 +153,9 @@ public class LoginController {
 		else {
 			String sql = "select * from dbo.reader where Rno = ?";
 			try {
-
+				
+//				m.sql_initial("ding", "808511");
+				
 				psmt = Main.con.prepareStatement(sql);
 				psmt.setInt(1, code);
 				// 执行SQL语句
@@ -182,7 +186,7 @@ public class LoginController {
 				JOptionPane.showMessageDialog(null, "编号或者登录口令错误!", "消息提示", 0);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "编号或者登录口令错误!", "消息提示", 0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
